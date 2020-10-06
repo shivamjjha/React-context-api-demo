@@ -21,3 +21,10 @@ export default class LanguageProvider extends Component {
     )
   }
 }
+
+// Our Custom Higher Order Component for consuming 2nd and futher contexts
+export const withLanguageContext = Component => props => (
+  <LanguageContext.Consumer>
+    {value => <Component languageContext={value} {...props} />}
+  </LanguageContext.Consumer>
+)
