@@ -14,10 +14,35 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import withStyles from "@material-ui/core/styles/withStyles";
 import styles from "./styles/FormStyles";
+import {LanguageContext} from './Contexts/LanguageContext';
+
+const words = {
+  english: {
+    email: "Email",
+    password: 'Password',
+    signin: 'Sign In',
+    remember: 'Remember'
+  },
+  french: {
+    email: "Email in French",
+    password: 'Password in French',
+    signin: 'SignIn in french',
+    remember: 'Remeber in French'
+  },
+  spanish: {
+    email: "Email in spanish",
+    password: 'Password in spanish',
+    signin: 'SignIn in Spanish',
+    remember: 'Remeber in Spanish'
+  },
+}
 
 class Form extends Component {
+  static contextType = LanguageContext;
   render() {
+    const {language, changeLanguage} = this.context;
     const { classes } = this.props;
+    const {email, password, signin, remember} = words[language];
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
@@ -25,23 +50,23 @@ class Form extends Component {
             <LockOutlinedIcon />
           </Avatar>
           <Typography variant='h5'>Sign In</Typography>
-          <Select value='english'>
+          <Select value={language} onChange={changeLanguage}>
             <MenuItem value='english'>English</MenuItem>
             <MenuItem value='french'>French</MenuItem>
             <MenuItem value='spanish'>Spanish</MenuItem>
           </Select>
           <form className={classes.form}>
             <FormControl margin='normal' required fullWidth>
-              <InputLabel htmlFor='email'>Email</InputLabel>
+              <InputLabel htmlFor='email'>{email}</InputLabel>
               <Input id='email' name='email' autoFocus />
             </FormControl>
             <FormControl margin='normal' required fullWidth>
-              <InputLabel htmlFor='password'>Password</InputLabel>
+              <InputLabel htmlFor='password'>{password}</InputLabel>
               <Input id='password' name='password' autoFocus />
             </FormControl>
             <FormControlLabel
               control={<Checkbox color='primary' />}
-              label='Remember Me'
+              label={remember}
             />
             <Button
               variant='contained'
@@ -50,7 +75,7 @@ class Form extends Component {
               color='primary'
               className={classes.submit}
             >
-              Sign In
+              {signin}
             </Button>
           </form>
         </Paper>
