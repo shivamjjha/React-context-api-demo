@@ -1,30 +1,14 @@
-import React, { Component, createContext } from 'react'
+import React, { createContext, useState } from 'react'
 
 export const LanguageContext = createContext();
 
-export default class LanguageProvider extends Component {
-  state = {
-    language: 'french'
-  }
+export default function LanguageProvider(props) {
+  const [language, setLanguage] = useState('french');
+  const changeLanguage = e => setLanguage(e.target.value);
 
-  changeLanguage = (e) => {
-    this.setState({language: e.target.value});
-  }
-
-  render() {
-    return (
-      <>
-        <LanguageContext.Provider value={{...this.state, changeLanguage: this.changeLanguage}}>
-          {this.props.children}
-        </LanguageContext.Provider>
-      </>
-    )
-  }
+  return (
+    <LanguageContext.Provider value={{ language, changeLanguage }}>
+      {props.children}
+    </LanguageContext.Provider>
+  );
 }
-
-// Our Custom Higher Order Component for consuming 2nd and futher contexts
-export const withLanguageContext = Component => props => (
-  <LanguageContext.Consumer>
-    {value => <Component languageContext={value} {...props} />}
-  </LanguageContext.Consumer>
-)
